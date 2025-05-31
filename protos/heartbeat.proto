@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package heartbeat;
+
+// Serviço de Heartbeat
+service Heartbeat {
+  // Método para um serviço (Terminal ou Servidor de Backup) enviar um sinal de vida
+  rpc SendHeartbeat (HeartbeatRequest) returns (EmptyResponse) {}
+}
+
+// Mensagem de requisição para o SendHeartbeat
+// Contém o identificador do serviço que está enviando o heartbeat
+message HeartbeatRequest {
+  string service_id = 1; // Ex: "terminal_1", "backup_server"
+}
+
+// Mensagem de resposta vazia para o SendHeartbeat
+// Usada quando não há dados significativos para retornar
+message EmptyResponse {
+  // Esta mensagem não tem campos.
+}

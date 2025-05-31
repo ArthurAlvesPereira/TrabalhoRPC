@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package backup;
+
+// Serviço de Backup para registrar transações
+service BackupService {
+  // Método para um Terminal registrar uma transação
+  rpc LogTransaction (TransactionRequest) returns (TransactionResponse) {}
+}
+
+// Mensagem de requisição para LogTransaction
+message TransactionRequest {
+  string terminal_id = 1;
+  // string client_id = 2; // O log do backup não especifica client_id diretamente na msg recebida, mas sim no conteúdo logado.
+                         // O terminal que monta a string para o log do backup incluindo o client_id, se necessário.
+                         // A requisição do terminal para o backup server [cite: 10] é:
+                         // "Requisição recebida do terminal [identificação do terminal] para classe [classe solicitada] [nome do veículo] [status] em [timestamp]"
+                         // Parece que o terminal envia os componentes, e o backup server forma a string de log.
+                         // O timestamp no log do backup é o de recebimento NO backup server.
+  string vehicle_class = 2;
+  string vehicle_name = 3; // Pode ser vazio se for PENDENTE sem veículo específico ainda
+  string status = 4;       // "CONCLUIDA" ou "PENDENTE"
+  // O timestamp do log do backup é gerado pelo próprio backup server ao receber.
+}
+
+// Mensagem de resposta para LogTransaction
+message TransactionResponse {
+  bool success = 1;        // true se o log foi bem-sucedido
+  string message = 2;      // Mensagem adicional (opcional)
+}
