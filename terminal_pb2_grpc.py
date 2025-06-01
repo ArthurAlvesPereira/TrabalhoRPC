@@ -27,7 +27,6 @@ if _version_not_supported:
 
 class TerminalStub(object):
     """Serviço principal do Terminal, chamado pelo Cliente
-    Nome do serviço como esperado pelo cliente (TerminalStub)
     """
 
     def __init__(self, channel):
@@ -41,16 +40,25 @@ class TerminalStub(object):
                 request_serializer=terminal__pb2.RentCarRequest.SerializeToString,
                 response_deserializer=terminal__pb2.RentCarResponse.FromString,
                 _registered_method=True)
+        self.ReturnVehicle = channel.unary_unary(
+                '/terminal.Terminal/ReturnVehicle',
+                request_serializer=terminal__pb2.ReturnVehicleRequest.SerializeToString,
+                response_deserializer=terminal__pb2.ReturnVehicleResponse.FromString,
+                _registered_method=True)
 
 
 class TerminalServicer(object):
     """Serviço principal do Terminal, chamado pelo Cliente
-    Nome do serviço como esperado pelo cliente (TerminalStub)
     """
 
     def RentACar(self, request, context):
-        """Cliente requisita a locação de um veículo de uma classe específica
-        Método e mensagens atualizados
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReturnVehicle(self, request, context):
+        """NOVO RPC
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -64,6 +72,11 @@ def add_TerminalServicer_to_server(servicer, server):
                     request_deserializer=terminal__pb2.RentCarRequest.FromString,
                     response_serializer=terminal__pb2.RentCarResponse.SerializeToString,
             ),
+            'ReturnVehicle': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReturnVehicle,
+                    request_deserializer=terminal__pb2.ReturnVehicleRequest.FromString,
+                    response_serializer=terminal__pb2.ReturnVehicleResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'terminal.Terminal', rpc_method_handlers)
@@ -74,7 +87,6 @@ def add_TerminalServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class Terminal(object):
     """Serviço principal do Terminal, chamado pelo Cliente
-    Nome do serviço como esperado pelo cliente (TerminalStub)
     """
 
     @staticmethod
@@ -104,13 +116,36 @@ class Terminal(object):
             metadata,
             _registered_method=True)
 
+    @staticmethod
+    def ReturnVehicle(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/terminal.Terminal/ReturnVehicle',
+            terminal__pb2.ReturnVehicleRequest.SerializeToString,
+            terminal__pb2.ReturnVehicleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
 
 class CallbackServiceStub(object):
-    """Este é o serviço que o CLIENTE implementa.
-    O TERMINAL atuará como CLIENTE deste serviço.
-    O cliente do professor define "class CallbackServiceServicer(terminal_pb2_grpc.CallbackServiceServicer):"
-    o que significa que esta definição de serviço DEVE estar no terminal.proto
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -126,11 +161,7 @@ class CallbackServiceStub(object):
 
 
 class CallbackServiceServicer(object):
-    """Este é o serviço que o CLIENTE implementa.
-    O TERMINAL atuará como CLIENTE deste serviço.
-    O cliente do professor define "class CallbackServiceServicer(terminal_pb2_grpc.CallbackServiceServicer):"
-    o que significa que esta definição de serviço DEVE estar no terminal.proto
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def ReceiveCallback(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -155,11 +186,7 @@ def add_CallbackServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class CallbackService(object):
-    """Este é o serviço que o CLIENTE implementa.
-    O TERMINAL atuará como CLIENTE deste serviço.
-    O cliente do professor define "class CallbackServiceServicer(terminal_pb2_grpc.CallbackServiceServicer):"
-    o que significa que esta definição de serviço DEVE estar no terminal.proto
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def ReceiveCallback(request,

@@ -15,8 +15,8 @@ import heartbeat_pb2_grpc
 
 BACKUP_LOG_FILE = "Backup.txt"
 BACKUP_SERVER_ID = "backup_server_main" # ID para o heartbeat
-HEARTBEAT_SERVER_ADDRESS = 'localhost:50051' # Endereço do seu servidor de heartbeat
-HEARTBEAT_SEND_INTERVAL = 4 # Segundos
+HEARTBEAT_SERVER_ADDRESS = 'localhost:50050' # Endereço do seu servidor de heartbeat
+HEARTBEAT_SEND_INTERVAL = 5 # Segundos
 
 backup_log_lock = threading.Lock() # Para escrita segura no arquivo de log
 
@@ -73,7 +73,7 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     backup_pb2_grpc.add_BackupServiceServicer_to_server(BackupServicer(), server)
     
-    backup_server_port = "50051" # Escolha uma porta DIFERENTE da do heartbeat server
+    backup_server_port = "50055" # Escolha uma porta DIFERENTE da do heartbeat server
     server.add_insecure_port(f'[::]:{backup_server_port}')
     print(f"Servidor de Backup iniciado na porta {backup_server_port}, enviando heartbeats como '{BACKUP_SERVER_ID}'.")
     

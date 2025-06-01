@@ -3,41 +3,43 @@ syntax = "proto3";
 package terminal;
 
 // Serviço principal do Terminal, chamado pelo Cliente
-service Terminal { // Nome do serviço como esperado pelo cliente (TerminalStub)
-  // Cliente requisita a locação de um veículo de uma classe específica
-  rpc RentACar (RentCarRequest) returns (RentCarResponse); // Método e mensagens atualizados
-  // TODO: Adicionar rpc ReturnVehicle (ReturnVehicleRequest) returns (ReturnVehicleResponse);
+service Terminal { 
+  rpc RentACar (RentCarRequest) returns (RentCarResponse);
+  rpc ReturnVehicle (ReturnVehicleRequest) returns (ReturnVehicleResponse); // NOVO RPC ADICIONADO
 }
 
 message RentCarRequest {
-  string ID_cliente = 1;       // Campo como esperado pelo cliente
-  string IP_cliente = 2;       // Campo como esperado pelo cliente
-  string Porta_cliente = 3;    // Campo como esperado pelo cliente
-  string Classe_veiculo = 4;   // Campo como esperado pelo cliente
+  string ID_cliente = 1;       
+  string IP_cliente = 2;       
+  string Porta_cliente = 3;    
+  string Classe_veiculo = 4;   
 }
 
 message RentCarResponse {
-  string item_name = 1;     // Nome do veículo se CONCLUIDO, ou nome da classe se PENDENTE
-  string status = 2;        // "CONCLUIDO" ou "PENDENTE" (campo esperado pelo cliente)
+  string item_name = 1;     
+  string status = 2;        
 }
 
 // --- Definições para o Callback Service que o Cliente implementa e o Terminal chama ---
-// O cliente do professor espera que estas definições venham de terminal_pb2 e terminal_pb2_grpc
-
 message CallbackMessage {
-  string message_content = 1; // Conteúdo da mensagem de callback
+  string message_content = 1; 
 }
 
 message CallbackResponse {
-  string status = 1;          // Status da resposta do callback (ex: "Callback Recebido OK")
+  string status = 1;          
 }
 
-// Este é o serviço que o CLIENTE implementa.
-// O TERMINAL atuará como CLIENTE deste serviço.
-// O cliente do professor define "class CallbackServiceServicer(terminal_pb2_grpc.CallbackServiceServicer):"
-// o que significa que esta definição de serviço DEVE estar no terminal.proto
 service CallbackService {
   rpc ReceiveCallback(CallbackMessage) returns (CallbackResponse);
 }
 
-// TODO: Definir mensagens para ReturnVehicle
+// --- Definições para Devolução de Veículo --- ADICIONADO
+message ReturnVehicleRequest {
+  string ID_cliente = 1;
+  string nome_veiculo = 2; // O nome exato do veículo que foi alugado
+}
+
+message ReturnVehicleResponse {
+  string status = 1;         // Ex: "DEVOLVIDO_SUCESSO", "ERRO_VEICULO_NAO_LOCADO_POR_CLIENTE", "VEICULO_NAO_ENCONTRADO"
+  string message = 2;        // Mensagem adicional
+}
