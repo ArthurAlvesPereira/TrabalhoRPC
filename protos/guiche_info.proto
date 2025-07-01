@@ -1,17 +1,16 @@
 syntax = "proto3";
 
-package guiche_info; // Pacote correspondente ao nome do arquivo para clareza
+package guiche_info;
 
 // Serviço de Informações (Guichê)
-service Information { // Nome do serviço como esperado pelo cliente
-  // Método para o cliente obter um terminal de atendimento ativo
-  rpc GetTerminalOnLine (Empty) returns (TerminalAddressResponse); // Método e request/response atualizados
+service Information {
+  rpc GetTerminalOnLine (Empty) returns (TerminalAddressResponse);
 }
 
-// Mensagem vazia, já que o cliente envia guiche_info_pb2.Empty()
+// Mensagem vazia
 message Empty {}
 
 // Mensagem de resposta para GetTerminalOnLine
 message TerminalAddressResponse {
-  string message = 1;     // Campo "message" contendo o endereço do terminal (ex: "localhost:50151")
+  string message = 1;
 }

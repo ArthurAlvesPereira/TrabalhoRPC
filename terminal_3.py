@@ -1,4 +1,4 @@
-# terminal_1.py
+# terminal_3.py
 
 import grpc
 import time
@@ -12,23 +12,18 @@ import heartbeat_pb2_grpc
 import backup_pb2
 import backup_pb2_grpc
 
-# Configs para terminal 1
-TERMINAL_ID = "terminal_1"
-TERMINAL_PORT = "50151"
-MY_PRIMARY_MANAGED_CLASSES = ["Executivos", "Minivan"]
+# Configs para terminal 3
+TERMINAL_ID = "terminal_3"
+TERMINAL_PORT = "50153"
+MY_PRIMARY_MANAGED_CLASSES = ["Economicos"]
 FLEET = {
-    "Executivos": [
-        {"name": "BMW Série 5", "available": True, "rented_to_client_id": None},
-        {"name": "Toyota Corolla Altis Híbrido", "available": True, "rented_to_client_id": None},
-    ],
-    "Minivan": [
-        {"name": "Chevrolet Spin", "available": True, "rented_to_client_id": None},
-        {"name": "Fiat Doblo", "available": True, "rented_to_client_id": None},
-        {"name": "Nissan Livina", "available": True, "rented_to_client_id": None},
-        {"name": "Citroën C4 Picasso", "available": True, "rented_to_client_id": None},
-        {"name": "Chevrolet Zafira", "available": True, "rented_to_client_id": None},
+    "Economicos": [
+        {"name": "Chevrolet Onix", "available": True, "rented_to_client_id": None},
+        {"name": "Renault Kwid", "available": True, "rented_to_client_id": None},
+        {"name": "Peugeot 208", "available": True, "rented_to_client_id": None},
     ]
 }
+
 
 HEARTBEAT_SERVER_ADDRESS = 'localhost:50050'
 BACKUP_SERVER_ADDRESS = 'localhost:50055'
@@ -95,7 +90,7 @@ def _register_with_backup(client_id, requested_class, vehicle_name, status, time
         log_terminal_event(f"Exceção inesperada ao contatar Backup Server para cliente {client_id} ({status}): {e_gen}.")
         return False
 
-def process_waiting_list_for_class(vehicle_class_available): 
+def process_waiting_list_for_class(vehicle_class_available):
     log_terminal_event(f"Process_waiting_list INICIADA para classe '{vehicle_class_available}'")
     pending_client_info = None
     with waiting_list_lock:
@@ -312,12 +307,12 @@ class TerminalServicer(terminal_pb2_grpc.TerminalServicer):
                             break
                         elif vehicle_obj["available"]:
                             log_terminal_event(f"Tentativa de devolução do veículo '{vehicle_name_returned}' por {client_id}, mas o veículo já consta como disponível neste terminal.")
-                            context.set_code(grpc.StatusCode.FAILED_PRECONDITION) 
+                            context.set_code(grpc.StatusCode.FAILED_PRECONDITION)
                             context.set_details(f"Veículo '{vehicle_name_returned}' já está disponível.")
                             return terminal_pb2.ReturnVehicleResponse(status="ERRO_VEICULO_JA_DISPONIVEL", message=f"Veículo '{vehicle_name_returned}' já está disponível.")
                         else: 
                             log_terminal_event(f"Tentativa de devolução do veículo '{vehicle_name_returned}' por {client_id}, mas está alugado para '{vehicle_obj['rented_to_client_id']}' neste terminal.")
-                            context.set_code(grpc.StatusCode.PERMISSION_DENIED) 
+                            context.set_code(grpc.StatusCode.PERMISSION_DENIED)
                             context.set_details(f"Veículo '{vehicle_name_returned}' não está alugado para o cliente {client_id} neste terminal.")
                             return terminal_pb2.ReturnVehicleResponse(status="ERRO_CLIENTE_INVALIDO", message="Veículo não alugado para este cliente neste terminal.")
                 if vehicle_found_for_client:

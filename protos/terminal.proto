@@ -5,7 +5,7 @@ package terminal;
 // Serviço principal do Terminal, chamado pelo Cliente
 service Terminal { 
   rpc RentACar (RentCarRequest) returns (RentCarResponse);
-  rpc ReturnVehicle (ReturnVehicleRequest) returns (ReturnVehicleResponse); // NOVO RPC ADICIONADO
+  rpc ReturnVehicle (ReturnVehicleRequest) returns (ReturnVehicleResponse);
 }
 
 message RentCarRequest {
@@ -20,7 +20,6 @@ message RentCarResponse {
   string status = 2;        
 }
 
-// --- Definições para o Callback Service que o Cliente implementa e o Terminal chama ---
 message CallbackMessage {
   string message_content = 1; 
 }
@@ -33,13 +32,12 @@ service CallbackService {
   rpc ReceiveCallback(CallbackMessage) returns (CallbackResponse);
 }
 
-// --- Definições para Devolução de Veículo --- ADICIONADO
 message ReturnVehicleRequest {
   string ID_cliente = 1;
-  string nome_veiculo = 2; // O nome exato do veículo que foi alugado
+  string nome_veiculo = 2;
 }
 
 message ReturnVehicleResponse {
-  string status = 1;         // Ex: "DEVOLVIDO_SUCESSO", "ERRO_VEICULO_NAO_LOCADO_POR_CLIENTE", "VEICULO_NAO_ENCONTRADO"
-  string message = 2;        // Mensagem adicional
+  string status = 1;        
+  string message = 2;       
 }

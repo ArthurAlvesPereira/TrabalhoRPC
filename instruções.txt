@@ -1,0 +1,13 @@
+Para criar os arquivos a partir dos protos apenas execute "make all" na raiz do projeto.
+
+na ordem de execução:
+python heartbeat_server.py
+python backup_server.py
+python info_server.py
+python terminal_1.py
+python terminal_2.py
+python terminal_3.py
+python client.py
+
+caso queira testar apenas a devolução, execute:
+python devolver_veiculo.py <ENDERECO_DO_TERMINAL> <ID_DO_CLIENTE> "<NOME_DO_VEICULO>"
